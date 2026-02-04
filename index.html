@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSight - Plant Disease Detection</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .chat-box { border: 1px solid #eee; padding: 10px; margin-top: 10px; height: 200px; overflow-y: auto; background: #f9f9f9; }
+        button { cursor: pointer; padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <h1>AgroSight 🌱</h1>
+    
+    <div class="container">
+        <h2>1. Detect Disease</h2>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Analyze Image</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>2. Ask the Expert AI</h2>
+        <div id="chat-response" class="chat-box"></div>
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+            <input type="text" id="question" placeholder="Ask about farming, pests, or soil..." style="flex-grow: 1; padding: 8px;">
+            <button onclick="askExpert()">Ask</button>
+        </div>
+    </div>
+
+    <script>
+        async function askExpert() {
+            const questionInput = document.getElementById('question');
+            const responseDiv = document.getElementById('chat-response');
+            const question = questionInput.value;
+            if (!question) return;
+
+            responseDiv.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+            questionInput.value = '';
+            responseDiv.scrollTop = responseDiv.scrollHeight;
+
+            try {
+                const res = await fetch('/ask_expert', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({question: question})
+                });
+                const data = await res.json();
+                responseDiv.innerHTML += `<p><strong>AI:</strong> ${data.response}</p>`;
+            } catch (err) {
+                responseDiv.innerHTML += `<p style="color:red;">Error connecting to AI.</p>`;
+            }
+            responseDiv.scrollTop = responseDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>

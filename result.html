@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result - AgroSight</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        img { max-width: 100%; max-height: 400px; border-radius: 8px; margin-top: 10px; }
+        .result-card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background-color: #f0f8ff; }
+        .label { font-weight: bold; color: #333; }
+        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: #28a745; }
+    </style>
+</head>
+<body>
+    <h1>Analysis Result</h1>
+    <div class="result-card">
+        <h2>Prediction: <span style="color: #d9534f;">{{ prediction }}</span></h2>
+        
+        <div class="label">Prescription:</div>
+        <p>{{ prescription }}</p>
+        
+        <div class="label">Recommended Pesticide:</div>
+        <p>{{ pesticide }}</p>
+
+        <div>
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Leaf">
+        </div>
+        
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>
